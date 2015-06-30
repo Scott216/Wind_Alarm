@@ -1,0 +1,36 @@
+There's more then on RS-485 serial output format for the Young Wind Tracker 06201.  For the older models:
+
+24 bytes
+
+byte   Description                                         Value
+------------------------------------------------------------------------
+ 0      Header, always                                             36
+ 1      Max/Dir Display, code for right numeric display             0 = max speed, 1=direction
+ 2      Sensor/WS Units. Code for sensor type and units displayed  12 = Wind monitor with knots
+ 3      Binary code for 8 annunciator lights on front panel        64 = knots
+ 4      Audio Beeper On/Off                                         0 = off, 1 = on
+ 5      Direction Alarm                                             0 = off, 1 = on
+ 6      Speed Alarm                                                 0 = off, 1 = on
+ 7-8    Speed Display - current wind speed displayed                2-byte integer
+ 9-10   Right Display, Max wind speed or direction                  2-byte integer
+11-12   Raw wind speed                                              2-byte integer
+13-14   Wind Direction in degrees                                   2-byte integer
+15-23   Binary codes for state of direction display LEDs
+
+
+Newer models use this format:
+9 bytes followed by CR/LF.  Byte are ASCII text value, so you need to convert to numbers. 
+Format is: 
+sss.s ddd<CR/LF>
+
+S is wind speed in meters/second
+d is wind direction in degrees
+
+For example:
+
+00 48 51 46 56 32 51 52 52 13 10 
+converts to:
+03.8 344
+3.8 meters/sec
+344 degrees
+
